@@ -1,0 +1,27 @@
+{
+  "name": "ricardodecarvalho/undermaintenance",
+  "type": "library",
+  "description": "Put your site under maintenance",
+  "keywords": [
+    "under maintenance",
+    "middleware"
+  ],
+  "homepage": "https://github.com/ricardodecarvalho/undermaintenance",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ricardo de Carvalho",
+      "email": "skapitao@gmail.com",
+      "homepage": "http://ricardodecarvalho/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "UnderMaintenance\\": "./src"
+    }
+  }
+}
