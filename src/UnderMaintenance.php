@@ -22,14 +22,21 @@ class UnderMaintenance
     private $ipsReleased;
 
     /**
+     * @var array
+     */
+    private $message;
+
+    /**
      * UnderMaintenance constructor.
      * @param bool $maintenance
      * @param array $ipsReleased
+     * @param array $message
      */
-    public function __construct($maintenance = false, $ipsReleased = [])
+    public function __construct($maintenance = false, $ipsReleased = [], $message = [])
     {
         $this->maintenance = $maintenance;
         $this->ipsReleased = $ipsReleased;
+        $this->message = $message;
     }
 
     /**
@@ -44,8 +51,24 @@ class UnderMaintenance
     {
         $ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR');
         if ($this->maintenance && !in_array($ip, $this->ipsReleased)) {
-            die('No momento estamos realizando uma manutenção em nosso site.');
+            $this->loadPage();
         }
         return $next($request, $response);
     }
+
+    private function loadPage()
+    {
+        $loader = new \Twig_Loader_Filesystem(__DIR__ . '/view');
+
+        $cache_path = __DIR__ . '/cache';
+        $twig = new \Twig_Environment($loader, array(
+            'cache' => $cache_path // or false
+        ));
+
+        $template = $twig->load('index.twig');
+
+        echo $template->render(array('msg' => $this->message));
+        die;
+    }
+
 }
