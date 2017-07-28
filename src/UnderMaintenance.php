@@ -27,16 +27,23 @@ class UnderMaintenance
     private $message;
 
     /**
+     * @var null
+     */
+    private $pathCache;
+
+    /**
      * UnderMaintenance constructor.
      * @param bool $maintenance
      * @param array $ipsReleased
      * @param array $message
+     * @param null $pathCache
      */
-    public function __construct($maintenance = false, $ipsReleased = [], $message = [])
+    public function __construct($maintenance = false, $ipsReleased = [], $message = [], $pathCache = null)
     {
         $this->maintenance = $maintenance;
         $this->ipsReleased = $ipsReleased;
         $this->message = $message;
+        $this->pathCache = $pathCache;
     }
 
     /**
@@ -59,14 +66,10 @@ class UnderMaintenance
     private function loadPage()
     {
         $loader = new \Twig_Loader_Filesystem(__DIR__ . '/view');
-
-        $cache_path = __DIR__ . '/cache';
         $twig = new \Twig_Environment($loader, array(
-            'cache' => $cache_path // or false
+            'cache' => $this->pathCache // or false
         ));
-
         $template = $twig->load('index.twig');
-
         echo $template->render(array('msg' => $this->message));
         die;
     }
